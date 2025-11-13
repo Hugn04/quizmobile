@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/blue_500</item>
+        <item name="hintTextColor">@color/gray_700</item>
+        <item name="startIconTint">@color/blue_500</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+    </style>
+    <style name="AppButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_height">60dp</item>
+        <item name="android:backgroundTint">@color/primary</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+
+</resources>

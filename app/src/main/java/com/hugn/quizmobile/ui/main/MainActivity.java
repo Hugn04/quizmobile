@@ -6,16 +6,21 @@ import android.os.Debug;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.hugn.quizmobile.R;
 import com.hugn.quizmobile.adapter.ProductAdapter;
+import com.hugn.quizmobile.base.PrivateActivity;
 import com.hugn.quizmobile.data.remote.api.ApiService;
 import com.hugn.quizmobile.data.remote.request.LoginRequest;
 import com.hugn.quizmobile.data.remote.response.LoginResponse;
@@ -34,23 +39,30 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends PrivateActivity {
 
     private ApiService apiService;
     private AuthViewModel viewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
-        viewModel.auth();
-        viewModel.auth().observe(this, authResult -> {
-            if (authResult != null) {
-                Log.d("UserInfo", authResult.getName());
-                setContentView(R.layout.activity_main);
-                Button btnLogout = findViewById(R.id.btnLogout);
-                apiService =  ApiClient.getApiService(this );
-                btnLogout.setOnClickListener(v -> {
+    protected void onAuthSuccess(User authResult) {
+        setContentView(R.layout.activity_main);
+
+        ImageView imgAvatar = findViewById(R.id.imgAvatar);
+        TextView tvUserName = findViewById(R.id.tvUserName);
+        Button btnLogout = findViewById(R.id.btnLogout);
+        tvUserName.setText(authResult.getName());
+        // load avatar từ URL nếu có
+        Glide.with(this).load(authResult.getName())
+                .placeholder(R.drawable.ic_launcher_background)
+                .circleCrop()
+                .into(imgAvatar);
+        apiService = ApiClient.getApiService(this);
+        imgAvatar.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(this, v);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_header, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.action_logout) {
                     apiService.logout().enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
@@ -61,20 +73,29 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-
-                        }
-
-
+                        public void onFailure(Call<String> call, Throwable t) { }
                     });
-                });
-
-
-            } else {
-                finish(); // để MainActivity không còn trong back stack
-            }
+                    return true;
+                }
+                return false;
+            });
+            popupMenu.show();
         });
-
+//        apiService = ApiClient.getApiService(this);
+//        btnLogout.setOnClickListener(v -> {
+//            apiService.logout().enqueue(new Callback<String>() {
+//                @Override
+//                public void onResponse(Call<String> call, Response<String> response) {
+//                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//
+//                @Override
+//                public void onFailure(Call<String> call, Throwable t) { }
+//            });
+//        });
     }
 
 

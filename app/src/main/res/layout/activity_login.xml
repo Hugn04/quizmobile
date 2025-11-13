@@ -1,32 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edtEmail"
-        android:hint="Email"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:showDividers="middle">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/logo" />
 
-    <EditText
-        android:id="@+id/edtPassword"
-        android:hint="Mật khẩu"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/MyTextInputLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:text="Đăng nhập"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtEmail"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textEmailAddress"
+                android:hint="Email" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/MyTextInputLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtPassword"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Mật khẩu"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnLogin"
+            style="@style/AppButton"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="8dp"
+            android:text="Đăng nhập" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnGoogleSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_google_button"
+            android:drawableStart="@drawable/ic_google_logo"
+            android:drawablePadding="12dp"
+            android:elevation="4dp"
+            android:padding="16dp"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif-medium"
+            android:text="Đăng nhập bằng Google"
+            android:textAllCaps="false"
+            android:textColor="#202124" />
+
+<!--        <com.google.android.gms.common.SignInButton-->
+<!--            android:id="@+id/btnGoogleSignIn"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="60dp" />-->
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/btnGoogleSignIn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:background="#80000000 "
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đang tải..."
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>
